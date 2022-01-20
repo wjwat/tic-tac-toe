@@ -30,12 +30,20 @@ div.row div.space {
   font-size: 4rem;
 }
 
-#winners-circle {
+#p1, #p2 {
+  /* display: clear;
+  justify-content: clear;
+  align-items: clear;
+  margin: auto; */
+  padding: 0px;
+}
+
+#bottom-display {
   text-align: center;
   font-size: 4rem;
   height: 4.5rem;
 }
 
-.winner {
+.display {
   background-color: red;
 }

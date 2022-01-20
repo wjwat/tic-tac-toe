@@ -21,7 +21,6 @@ const winningCombos = [[0, 1, 2],
 
 
 $(document).ready(function () {
-
   function checkWinner(board) {
     // iterate over winning combo to see if someone has won
     for (const e of winningCombos) {
@@ -50,39 +49,46 @@ $(document).ready(function () {
     }
   }
 
-  // display winner
-  // display winning move (return win combo from check winner)
-  // lock out user from any more clicks
-  // show reset button to redo
   function displayWinner() {
     winner = currentPlayer ? 'X' : 'O';
-    $('#winners-circle').text(winner + ' won!');
+    $('#bottom-display').text(winner + ' won!');
     winningPlay.forEach(e => {
-      $('#' + e).addClass('winner')
+      $('#' + e).addClass('display')
     })
   }
 
+  function updateCurrentMove() {
+    $('#bottom-display').text('Current Move: ' + (currentPlayer ? 'X' : 'O'));
+  }
+
   function registerBoardClicks() {
+    updateCurrentMove();
     $('div.space').on('click', function(e) {
       markPosition(this, currentPlayer ? 'X' : 'O');
       if (checkWinner(board) && winningPlay.some(Number)) {
         $('div.space').off();
         displayWinner();
-      };
+      } else if (board.every(Number.isInteger)) {
+        $(this).off();
+      }
       currentPlayer = !currentPlayer;
+      updateCurrentMove();
     });
   }
 
   $('#clear').on('click', e => {
     board = Array(9);
     currentPlayer = true;
+
     $('div.space').each(function(i) {
       $(this).text('');
-      $(this).removeClass('winner');
+      $(this).removeClass('display');
     })
-    $('#winners-circle').text('');
+    $('#bottom-display').text('');
+
     registerBoardClicks();
   })
+
   $('#debug').on('click', e => {
     print(currentPlayer);
     print(board);
