@@ -1,0 +1,21 @@
+body {
+  margin: auto;
+  width: 50rem;
+}
+
+div {
+  padding: 20px;
+  border: 1px solid red;
+}
+
+div.row {
+  position: relative;
+  margin: 0 auto;
+}
+
+div.row div {
+  border: 1px solid black;
+  min-width: 100px;
+  min-height: 100px;
+  display: inline-block;
+}
