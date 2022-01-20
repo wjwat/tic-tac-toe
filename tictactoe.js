@@ -3,7 +3,7 @@ const print = console.log;
 //
 
 let currentPlayer = true;
-let board = Array(8);
+let board = Array(9);
 let winningPlay = Array(3);
 
 // 012
@@ -29,7 +29,7 @@ $(document).ready(function () {
 
       if (x.every(Number.isInteger) &&
           x.every((v, i , a) => v === a[0])) {
-        winningPlay = [...x];
+        winningPlay = [...e]
         return true;
       }
     }
@@ -41,7 +41,7 @@ $(document).ready(function () {
       return;
     }
 
-    $(sel).html(`${player}`)
+    $(sel).text(player)
 
     if (player === 'X') {
       board[sel.id] = 0;
@@ -50,25 +50,46 @@ $(document).ready(function () {
     }
   }
 
+  // display winner
+  // display winning move (return win combo from check winner)
+  // lock out user from any more clicks
+  // show reset button to redo
   function displayWinner() {
     winner = currentPlayer ? 'X' : 'O';
-    $('#winners-circle').html('<h1>' + winner + ' won!</h1>')
+    $('#winners-circle').text(winner + ' won!');
+    winningPlay.forEach(e => {
+      $('#' + e).addClass('winner')
+    })
   }
 
-  $('div.row div').on('click', function(e) {
-    markPosition(this, currentPlayer ? 'X' : 'O');
-    if (checkWinner(board)) {
-      displayWinner();
-    };
-    // display winner
-    // display winning move (return win combo from check winner)
-    // lock out user from any more clicks
-    // show reset button to redo
-    currentPlayer = !currentPlayer;
-  })
+  function registerBoardClicks() {
+    $('div.space').on('click', function(e) {
+      markPosition(this, currentPlayer ? 'X' : 'O');
+      if (checkWinner(board) && winningPlay.some(Number)) {
+        $('div.space').off();
+        displayWinner();
+      };
+      currentPlayer = !currentPlayer;
+    });
+  }
 
+  $('#clear').on('click', e => {
+    board = Array(9);
+    currentPlayer = true;
+    $('div.space').each(function(i) {
+      $(this).text('');
+      $(this).removeClass('winner');
+    })
+    $('#winners-circle').text('');
+    registerBoardClicks();
+  })
   $('#debug').on('click', e => {
     print(currentPlayer);
     print(board);
+    print(winningPlay);
+    print(winningPlay.some(Number));
+    print('==============')
   })
+
+  registerBoardClicks();
 })

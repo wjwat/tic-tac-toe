@@ -27,9 +27,15 @@ div.row div.space {
   display: flex;
   justify-content: center;
   align-items: center;
-  font-size: 4em;
+  font-size: 4rem;
 }
 
 #winners-circle {
   text-align: center;
+  font-size: 4rem;
+  height: 4.5rem;
+}
+
+.winner {
+  background-color: red;
 }
