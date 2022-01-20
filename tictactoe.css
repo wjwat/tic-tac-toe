@@ -44,6 +44,10 @@ div.row div.space {
   height: 4.5rem;
 }
 
+#reset {
+  text-transform: uppercase;
+}
+
 .display {
   background-color: red;
 }

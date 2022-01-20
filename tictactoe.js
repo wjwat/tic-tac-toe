@@ -65,11 +65,12 @@ $(document).ready(function () {
     updateCurrentMove();
     $('div.space').on('click', function(e) {
       markPosition(this, currentPlayer ? 'X' : 'O');
-      if (checkWinner(board) && winningPlay.some(Number)) {
+      if (checkWinner(board) && winningPlay.some(Number)) { // a player has won!
         $('div.space').off();
         displayWinner();
         return;
-      } else if (board.every(Number.isInteger)) {
+      } else if (board.every(Number.isInteger)) { // Stalemate
+        
         $(this).off();
       }
       currentPlayer = !currentPlayer;
@@ -77,7 +78,7 @@ $(document).ready(function () {
     });
   }
 
-  $('#clear').on('click', e => {
+  $('#reset').on('click', e => {
     board = Array(9);
     currentPlayer = true;
 
