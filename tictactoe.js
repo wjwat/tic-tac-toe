@@ -68,6 +68,7 @@ $(document).ready(function () {
       if (checkWinner(board) && winningPlay.some(Number)) {
         $('div.space').off();
         displayWinner();
+        return;
       } else if (board.every(Number.isInteger)) {
         $(this).off();
       }
