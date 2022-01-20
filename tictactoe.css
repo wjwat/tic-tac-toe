@@ -5,17 +5,31 @@ body {
 
 div {
   padding: 20px;
-  border: 1px solid red;
+  /* border: 1px solid red; */
 }
 
 div.row {
-  position: relative;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 0px;
   margin: 0 auto;
 }
 
-div.row div {
+div.row div.space {
   border: 1px solid black;
   min-width: 100px;
   min-height: 100px;
   display: inline-block;
+}
+
+div.row div.space {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 4em;
+}
+
+#winners-circle {
+  text-align: center;
 }
