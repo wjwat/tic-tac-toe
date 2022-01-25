@@ -1,6 +1,4 @@
-// XXX Rip this out
-const print = console.log;
-//
+const _DEBUG = false;
 
 let currentPlayer = true;
 let board = Array(9);
@@ -20,35 +18,35 @@ const winningCombos = [[0, 1, 2],
                        [2, 4, 6]];
 
 
+function checkWinner(board) {
+// iterate over winning combo to see if someone has won
+  for (const e of winningCombos) {
+    x = [board[e[0]], board[e[1]], board[e[2]]];
+
+    if (x.every(Number.isInteger) &&
+        x.every((v, i , a) => v === a[0])) {
+      winningPlay = [...e]
+      return true;
+    }
+  }
+  return false;
+}
+
+function markPosition(sel, player) {
+  if (Number.isInteger(board[sel.id])) {
+    return;
+  }
+
+  $(sel).text(player)
+
+  if (player === 'X') {
+    board[sel.id] = 1;
+  } else {
+    board[sel.id] = 0;
+  }
+}
+
 $(document).ready(function () {
-  function checkWinner(board) {
-    // iterate over winning combo to see if someone has won
-    for (const e of winningCombos) {
-      x = [board[e[0]], board[e[1]], board[e[2]]];
-
-      if (x.every(Number.isInteger) &&
-          x.every((v, i , a) => v === a[0])) {
-        winningPlay = [...e]
-        return true;
-      }
-    }
-    return false;
-  }
-
-  function markPosition(sel, player) {
-    if (Number.isInteger(board[sel.id])) {
-      return;
-    }
-
-    $(sel).text(player)
-
-    if (player === 'X') {
-      board[sel.id] = 0;
-    } else {
-      board[sel.id] = 1;
-    }
-  }
-
   function displayWinner() {
     winner = currentPlayer ? 'X' : 'O';
     $('#bottom-display').text(winner + ' won!');
@@ -63,6 +61,10 @@ $(document).ready(function () {
 
   function registerBoardClicks() {
     updateCurrentMove();
+    // If a user clicks #reset multiple times it will register multiple click event
+    // handlers which is why when you'd click on a separate space you'd get another
+    // X instead of an O.
+    $('div.space').off('click');
     $('div.space').on('click', function(e) {
       markPosition(this, currentPlayer ? 'X' : 'O');
       if (checkWinner(board) && winningPlay.some(Number)) { // a player has won!
@@ -70,7 +72,6 @@ $(document).ready(function () {
         displayWinner();
         return;
       } else if (board.every(Number.isInteger)) { // Stalemate
-        
         $(this).off();
       }
       currentPlayer = !currentPlayer;
@@ -80,6 +81,7 @@ $(document).ready(function () {
 
   $('#reset').on('click', e => {
     board = Array(9);
+    winningPlay = Array(3);
     currentPlayer = true;
 
     $('div.space').each(function(i) {
@@ -91,13 +93,15 @@ $(document).ready(function () {
     registerBoardClicks();
   })
 
-  $('#debug').on('click', e => {
-    print(currentPlayer);
-    print(board);
-    print(winningPlay);
-    print(winningPlay.some(Number));
-    print('==============')
-  })
+  if (_DEBUG) {
+    $('#debug').show();
+    $('#debug').on('click', e => {
+      let now = new Date();
+      let out = {currentPlayer, board, winningPlay}; //, winningPlay.some(Number)};
+      console.log(now.toISOString());
+      console.log(out);
+    })
+  }
 
   registerBoardClicks();
 })

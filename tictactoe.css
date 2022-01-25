@@ -48,6 +48,10 @@ div.row div.space {
   text-transform: uppercase;
 }
 
+#debug {
+  display: none;
+}
+
 .display {
   background-color: red;
 }
